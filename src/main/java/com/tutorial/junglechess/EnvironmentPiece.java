@@ -10,12 +10,7 @@ package com.tutorial.junglechess;
  */
 public class EnvironmentPiece extends Piece {
 
-    private EnvironmentType type;
-
-    public EnvironmentPiece(int x, int y, EnvironmentType type, String imageName) {
-        this.x = x;
-        this.y = y;
-        this.type = type;
-        this.imageName = imageName;
+    public EnvironmentPiece(int x, int y, Rank rank, String imageName) {
+        super(x, y, rank, imageName);
     }
 }

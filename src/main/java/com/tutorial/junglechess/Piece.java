@@ -9,53 +9,73 @@ package com.tutorial.junglechess;
  * @author nghin
  */
 enum Rank {
-    MOUSE,
-    CAT,
-    WOLF,
-    DOG,
-    LEOPARD,
-    TIGER,
-    LION,
-    ELEPHANT 
+  MOUSE,
+  CAT,
+  WOLF,
+  DOG,
+  LEOPARD,
+  TIGER,
+  LION,
+  ELEPHANT,
+  TRAP,
+  DEN,
+  RIVER
 }
 
-enum EnvironmentType {
-    TRAP,
-    DEN,
-    RIVER
-}
+// enum EnvironmentType {
+//
+// }
 public abstract class Piece {
-    int x, y;
-    String imageName;
-    
-//    public abstract boolean isOutOfBoard();
-//    public abstract boolean isSelfKilling();
-//    public abstract boolean isValidMove();
-//    public abstract void move();
 
-    public String getImageName() {
-        return imageName;
-    }
+  int x, y;
+  String imageName;
+  Rank rank;
+  boolean playable = true;
 
-    public int getX() {
-        return x;
-    }
+  Piece(int x, int y, Rank rank, String imageName) {
+    this.x = x;
+    this.y = y;
+    this.rank = rank;
+    this.imageName = imageName;
 
-    public int getY() {
-        return y;
-    }
+    if (this.rank == Rank.TRAP || this.rank == Rank.DEN || this.rank == Rank.RIVER)
+      this.playable = false;
+  }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
+  public boolean isPlayable() {
+    return this.playable;
+  }
 
-    public void setX(int x) {
-        this.x = x;
-    }
+  public String getImageName() {
+    return imageName;
+  }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-    
-    
+  public void setImageName(String imageName) {
+    this.imageName = imageName;
+  }
+
+  public Rank getRank() {
+    return rank;
+  }
+
+  public void setRank(Rank rank) {
+    this.rank = rank;
+  }
+
+  public int getX() {
+    return x;
+  }
+
+  public void setX(int x) {
+    this.x = x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
+  public void setY(int y) {
+    this.y = y;
+  }
+
 }

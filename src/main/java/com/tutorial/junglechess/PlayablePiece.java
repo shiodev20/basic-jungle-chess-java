@@ -8,19 +8,20 @@ package com.tutorial.junglechess;
  *
  * @author nghin
  */
+public class PlayablePiece extends Piece {
 
+  private boolean isRiverPassable;
+  private boolean isBlack;
 
-
-public class PlayablePiece extends Piece{
-    private Rank rank;
-    private boolean isRiverPassable = false;
-    
-    public PlayablePiece(int x, int y, Rank rank, String imageName) {
-        this.x = x;
-        this.y = y;
-        this.rank = rank;
-        this.imageName = imageName;
-        
-        if(this.rank == Rank.WOLF || this.rank == Rank.LEOPARD) this.isRiverPassable = true;
+  public PlayablePiece(int x, int y, Rank rank, boolean isBlack, String imageName) {
+    super(x, y, rank, imageName);
+    this.isBlack = isBlack;
+    if (this.rank == Rank.WOLF || this.rank == Rank.LEOPARD) {
+      this.isRiverPassable = true;
     }
+  }
+
+  public boolean getSide() {
+    return this.isBlack;
+  }
 }
