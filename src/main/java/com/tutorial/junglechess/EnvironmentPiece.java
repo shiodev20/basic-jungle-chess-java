@@ -10,7 +10,7 @@ package com.tutorial.junglechess;
  */
 public class EnvironmentPiece extends Piece {
 
-    public EnvironmentPiece(int x, int y, Rank rank, String imageName) {
-        super(x, y, rank, imageName);
+    public EnvironmentPiece(int x, int y, Rank rank) {
+        super(x, y, rank);
     }
 }

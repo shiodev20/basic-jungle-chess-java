@@ -9,17 +9,17 @@ package com.tutorial.junglechess;
  * @author nghin
  */
 // enum Rank {
-//   MOUSE,
-//   CAT,
-//   WOLF,
-//   DOG,
-//   LEOPARD,
-//   TIGER,
-//   LION,
-//   ELEPHANT,
-//   TRAP,
-//   DEN,
-//   RIVER
+// MOUSE,
+// CAT,
+// WOLF,
+// DOG,
+// LEOPARD,
+// TIGER,
+// LION,
+// ELEPHANT,
+// TRAP,
+// DEN,
+// RIVER
 // }
 
 // enum EnvironmentType {
@@ -32,14 +32,17 @@ public abstract class Piece {
   Rank rank;
   boolean playable = true;
 
-  Piece(int x, int y, Rank rank, String imageName) {
+  Piece(int x, int y, Rank rank) {
     this.x = x;
     this.y = y;
     this.rank = rank;
-    this.imageName = imageName;
-
     if (this.rank == Rank.TRAP || this.rank == Rank.DEN || this.rank == Rank.RIVER)
       this.playable = false;
+  }
+
+  Piece(int x, int y, Rank rank, String imageName) {
+    this(x, y, rank);
+    this.imageName = imageName;
   }
 
   public boolean isPlayable() {

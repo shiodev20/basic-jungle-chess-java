@@ -4,6 +4,7 @@
  */
 package com.tutorial.junglechess;
 
+import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,30 +21,30 @@ public class Board {
 
   public Board() {
     // Trap
-    pieces.add(new EnvironmentPiece(240, 560, Rank.TRAP, "res/trap.gif"));
-    pieces.add(new EnvironmentPiece(160, 640, Rank.TRAP, "res/trap.gif"));
-    pieces.add(new EnvironmentPiece(320, 640, Rank.TRAP, "res/trap.gif"));
-    pieces.add(new EnvironmentPiece(240, 80, Rank.TRAP, "res/trap.gif"));
-    pieces.add(new EnvironmentPiece(160, 0, Rank.TRAP, "res/trap.gif"));
-    pieces.add(new EnvironmentPiece(320, 0, Rank.TRAP, "res/trap.gif"));
+    pieces.add(new EnvironmentPiece(240, 560, Rank.TRAP));
+    pieces.add(new EnvironmentPiece(160, 640, Rank.TRAP));
+    pieces.add(new EnvironmentPiece(320, 640, Rank.TRAP));
+    pieces.add(new EnvironmentPiece(240, 80, Rank.TRAP));
+    pieces.add(new EnvironmentPiece(160, 0, Rank.TRAP));
+    pieces.add(new EnvironmentPiece(320, 0, Rank.TRAP));
 
     // Den
-    pieces.add(new EnvironmentPiece(240, 640, Rank.DEN, "res/den.gif"));
-    pieces.add(new EnvironmentPiece(240, 0, Rank.DEN, "res/den.gif"));
+    pieces.add(new EnvironmentPiece(240, 640, Rank.DEN));
+    pieces.add(new EnvironmentPiece(240, 0, Rank.DEN));
 
     // River
-    pieces.add(new EnvironmentPiece(80, 240, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(80, 320, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(80, 400, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(160, 240, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(160, 320, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(160, 400, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(320, 240, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(320, 320, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(320, 400, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(400, 240, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(400, 320, Rank.RIVER, "res/river.gif"));
-    pieces.add(new EnvironmentPiece(400, 400, Rank.RIVER, "res/river.gif"));
+    pieces.add(new EnvironmentPiece(80, 240, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(80, 320, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(80, 400, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(160, 240, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(160, 320, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(160, 400, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(320, 240, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(320, 320, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(320, 400, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(400, 240, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(400, 320, Rank.RIVER));
+    pieces.add(new EnvironmentPiece(400, 400, Rank.RIVER));
 
     // Black team
     pieces.add(new PlayablePiece(0, 480, Rank.ELEPHANT, true, "res/blackPiece/elephant.gif"));
@@ -65,48 +66,54 @@ public class Board {
     pieces.add(new PlayablePiece(480, 0, Rank.TIGER, false, "res/redPiece/tiger.gif"));
     pieces.add(new PlayablePiece(0, 0, Rank.LION, false, "res/redPiece/lion.gif"));
 
-    
-
   }
 
   public void movePiece(int fromX, int fromY, int toX, int toY) {
     boolean isValidStep = this.isValidStep(fromX, fromY, toX, toY);
 
-    if(isValidStep) {
+    if (isValidStep) {
 
-      if(this.getPieceAt(fromX, fromY) != null && this.getPieceAt(fromX, fromY).isPlayable()) {
-        // PlayablePiece movedPiece = (PlayablePiece) this.getPieceAt(fromX, fromY);
+      if (this.getPieceAt(fromX, fromY) != null && this.getPieceAt(fromX, fromY).isPlayable()) {
+        PlayablePiece movedPiece = (PlayablePiece) this.getPieceAt(fromX, fromY);
 
-        System.out.println(this.getPieceAt(fromX, fromY).getRank());
+        if (this.getPieceAt(toX, toY) != null && !this.getPieceAt(toX, toY).isPlayable()) {
+          // PlayablePiece >< EnvironmentPiece
 
-        // if(this.getPieceAt(toX, toY) != null && !this.getPieceAt(toX, toY).isPlayable()) {
-        //   // PlayablePiece >< EnvironmentPiece
-        //   EnvironmentPiece environmentPiece = (EnvironmentPiece) this.getPieceAt(toX, toY);
+          EnvironmentPiece environmentPiece = (EnvironmentPiece) this.getPieceAt(toX, toY);
 
-        //   switch (environmentPiece.getRank()) {
-        //     case RIVER:
-        //       if(movedPiece.isRiverPassable()) {
-        //         this.pieces.remove(movedPiece);
-        //         this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
-        //       }
-        //       break;
-        //     case TRAP:
-        //       break;
+          switch (environmentPiece.getRank()) {
+            case RIVER:
+              if (movedPiece.isRiverPassable()) {
+                this.pieces.remove(movedPiece);
+                this.pieces.remove(environmentPiece);
 
-        //     case DEN:
-        //       break;
-        //   }
+                PlayablePiece newPiece = new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName());
+                this.pieces.add(newPiece);
 
-        // }
-        // else if(this.getPieceAt(toX, toY) != null && this.getPieceAt(toX, toY).isPlayable()) {
-        //   // PlayablePiece >< PlayablePiece
+                this.trackRivers();
+              }
+              break;
 
-        // }
-        // else {
-        //   // PlayablePiece >< Nothing
-        //   this.pieces.remove(movedPiece);
-        //   this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
-        // }
+            case TRAP:
+              break;
+
+            case DEN:
+              break;
+          }
+
+        } else if (this.getPieceAt(toX, toY) != null && this.getPieceAt(toX, toY).isPlayable()) {
+          // PlayablePiece >< PlayablePiece
+          
+
+
+          this.trackRivers();
+        } else {
+          // PlayablePiece >< Nothing
+          this.pieces.remove(movedPiece);
+          this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
+
+          this.trackRivers();  
+        }
 
       }
 
@@ -116,8 +123,10 @@ public class Board {
   public boolean isValidStep(int fromX, int fromY, int toX, int toY) {
     int steps = 0;
 
-    if(fromX == toX) steps = Math.abs(fromY - toY) / 80;
-    else if(fromY == toY) steps = Math.abs(fromX - toX) / 80;
+    if (fromX == toX)
+      steps = Math.abs(fromY - toY) / 80;
+    else if (fromY == toY)
+      steps = Math.abs(fromX - toX) / 80;
 
     return steps == 1;
   }
@@ -163,4 +172,41 @@ public class Board {
     return yMarks[idx];
   }
 
+  public Set<Piece> getRiverPieces() {
+    Set<Piece> pieces = new HashSet<Piece>();
+
+    for (Piece piece : this.getPieces()) {
+      if (piece.getRank() == Rank.RIVER)
+        pieces.add(piece);
+    }
+
+    return pieces;
+  }
+
+  public Set<Point> getRiverPoints() {
+    Set<Point> points = new HashSet<Point>();
+
+    points.add(new Point(80, 240));
+    points.add(new Point(80, 320));
+    points.add(new Point(80, 400));
+    points.add(new Point(160, 240));
+    points.add(new Point(160, 320));
+    points.add(new Point(160, 400));
+    points.add(new Point(320, 240));
+    points.add(new Point(320, 320));
+    points.add(new Point(320, 400));
+    points.add(new Point(400, 240));
+    points.add(new Point(400, 320));
+    points.add(new Point(400, 400));
+
+    return points;
+  }
+ 
+  public void trackRivers() {
+    for (Point point : this.getRiverPoints()) {
+      if (this.getPieceAt(point.x, point.y) == null) {
+        pieces.add(new EnvironmentPiece(point.x, point.y, Rank.RIVER));
+      }
+    }
+  }
 }

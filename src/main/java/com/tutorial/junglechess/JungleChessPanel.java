@@ -8,6 +8,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -50,6 +51,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
 
     try {
       drawPieces(g);
+      drawEnvironments(g);
     } catch (IOException ex) {
       Logger.getLogger(JungleChessPanel.class.getName()).log(Level.SEVERE, null, ex);
     }
@@ -67,9 +69,35 @@ public class JungleChessPanel extends JPanel implements MouseListener {
 
   private void drawPieces(Graphics g) throws IOException {
     for (Piece piece : this.board.getPieces()) {
-      File imageFile = new File(piece.getImageName());
-      BufferedImage image = ImageIO.read(imageFile);
-      g.drawImage(image, piece.getX(), piece.getY(), this);
+      if (piece.getImageName() != null) {
+        File imageFile = new File(piece.getImageName());
+        BufferedImage image = ImageIO.read(imageFile);
+        g.drawImage(image, piece.getX(), piece.getY(), this);
+      }
+    }
+  }
+
+  private void drawEnvironments(Graphics g) throws IOException {
+    File riverFile = new File("res/river.gif");
+    File denFile = new File("res/den.gif");
+    File trapFile = new File("res/trap.gif");
+
+    BufferedImage riverImage = ImageIO.read(riverFile);
+    BufferedImage denImage = ImageIO.read(denFile);
+    BufferedImage trapImage = ImageIO.read(trapFile);
+
+    g.drawImage(trapImage, 240, 560, this);
+    g.drawImage(trapImage, 160, 640, this);
+    g.drawImage(trapImage, 320, 640, this);
+    g.drawImage(trapImage, 240, 80, this);
+    g.drawImage(trapImage, 160, 0, this);
+    g.drawImage(trapImage, 320, 0, this);
+
+    g.drawImage(denImage, 240, 0, this);
+    g.drawImage(denImage, 240, 640, this);
+
+    for (Point point : this.board.getRiverPoints()) {
+      g.drawImage(riverImage, (int)point.getX(), (int)point.getY(), this);
     }
   }
 
@@ -84,7 +112,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
 
   @Override
   public void mouseReleased(MouseEvent e) {
-    Point targetPoint = new Point(board.getXMark(e.getPoint().x), board.getYMark(e.getPoint().y) );
+    Point targetPoint = new Point(board.getXMark(e.getPoint().x), board.getYMark(e.getPoint().y));
     this.board.movePiece(this.pressedPoint.x, this.pressedPoint.y, targetPoint.x, targetPoint.y);
     repaint();
   }
