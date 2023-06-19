@@ -12,6 +12,7 @@ public class PlayablePiece extends Piece {
 
   private boolean isRiverPassable;
   private boolean isBlack;
+  private boolean isTrapped;
 
   public PlayablePiece(int x, int y, Rank rank, boolean isBlack, String imageName) {
     super(x, y, rank, imageName);
@@ -25,5 +26,13 @@ public class PlayablePiece extends Piece {
 
   public boolean isRiverPassable() {
     return this.isRiverPassable;
+  }
+
+  public boolean isTrapped() {
+    return isTrapped;
+  }
+
+  public void setIsTrapped() {
+    
   }
 }

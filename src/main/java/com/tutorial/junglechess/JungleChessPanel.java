@@ -48,8 +48,8 @@ public class JungleChessPanel extends JPanel implements MouseListener {
     drawBoard(g);
 
     try {
-      drawPieces(g);
       drawEnvironments(g);
+      drawPieces(g);
     } catch (IOException ex) {
       Logger.getLogger(JungleChessPanel.class.getName()).log(Level.SEVERE, null, ex);
     }

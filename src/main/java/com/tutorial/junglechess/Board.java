@@ -90,11 +90,16 @@ public class Board {
                 PlayablePiece newPiece = new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName());
                 this.pieces.add(newPiece);
 
-                this.trackRivers();
+                this.trackEnvironments();
               }
               break;
 
             case TRAP:
+              this.pieces.remove(movedPiece);
+              this.pieces.remove(environmentPiece);
+              
+              PlayablePiece newPiece = new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName());
+              this.pieces.add(newPiece);
               break;
 
             case DEN:
@@ -103,7 +108,7 @@ public class Board {
 
         } else if (this.getPieceAt(toX, toY) != null && this.getPieceAt(toX, toY).isPlayable()) {
           // PlayablePiece >< PlayablePiece
-          
+
           PlayablePiece targetPiece = (PlayablePiece) this.getPieceAt(toX, toY);
 
           if(movedPiece.getSide() != targetPiece.getSide())  {
@@ -117,7 +122,7 @@ public class Board {
             }
           }
 
-          this.trackRivers();
+          this.trackEnvironments();
 
         } else {
           // PlayablePiece >< Nothing
@@ -125,7 +130,7 @@ public class Board {
           this.pieces.remove(movedPiece);
           this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
 
-          this.trackRivers();  
+          this.trackEnvironments();  
         }
 
       }
@@ -185,17 +190,6 @@ public class Board {
     return yMarks[idx];
   }
 
-  public Set<Piece> getRiverPieces() {
-    Set<Piece> pieces = new HashSet<Piece>();
-
-    for (Piece piece : this.getPieces()) {
-      if (piece.getRank() == Rank.RIVER)
-        pieces.add(piece);
-    }
-
-    return pieces;
-  }
-
   public Set<Point> getRiverPoints() {
     Set<Point> points = new HashSet<Point>();
 
@@ -215,11 +209,38 @@ public class Board {
     return points;
   }
  
-  public void trackRivers() {
+  public Set<Point> getTrapPoints() {
+    Set<Point> points = new HashSet<Point>();
+
+    points.add(new Point(160, 0));
+    points.add(new Point(240, 80));
+    points.add(new Point(320, 0));
+    points.add(new Point(240, 560));
+    points.add(new Point(160, 640));
+    points.add(new Point(320, 640));
+
+    return points;
+  }
+
+  public void trackEnvironments() {
     for (Point point : this.getRiverPoints()) {
       if (this.getPieceAt(point.x, point.y) == null) {
         pieces.add(new EnvironmentPiece(point.x, point.y, Rank.RIVER));
       }
     }
+
+    for (Point point : this.getTrapPoints()) {
+      if (this.getPieceAt(point.x, point.y) == null) {
+        pieces.add(new EnvironmentPiece(point.x, point.y, Rank.RIVER));
+      }
+    }
   }
+
+  // public void trackRivers() {
+  //   for (Point point : this.getRiverPoints()) {
+  //     if (this.getPieceAt(point.x, point.y) == null) {
+  //       pieces.add(new EnvironmentPiece(point.x, point.y, Rank.RIVER));
+  //     }
+  //   }
+  // }
 }
