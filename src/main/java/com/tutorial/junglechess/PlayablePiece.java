@@ -16,12 +16,14 @@ public class PlayablePiece extends Piece {
   public PlayablePiece(int x, int y, Rank rank, boolean isBlack, String imageName) {
     super(x, y, rank, imageName);
     this.isBlack = isBlack;
-    if (this.rank == Rank.WOLF || this.rank == Rank.LEOPARD) {
-      this.isRiverPassable = true;
-    }
+    if (this.rank == Rank.MOUSE) this.isRiverPassable = true;
   }
 
   public boolean getSide() {
     return this.isBlack;
+  }
+
+  public boolean isRiverPassable() {
+    return this.isRiverPassable;
   }
 }

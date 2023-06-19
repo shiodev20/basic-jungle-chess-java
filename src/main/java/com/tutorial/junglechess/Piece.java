@@ -8,19 +8,19 @@ package com.tutorial.junglechess;
  *
  * @author nghin
  */
-enum Rank {
-  MOUSE,
-  CAT,
-  WOLF,
-  DOG,
-  LEOPARD,
-  TIGER,
-  LION,
-  ELEPHANT,
-  TRAP,
-  DEN,
-  RIVER
-}
+// enum Rank {
+//   MOUSE,
+//   CAT,
+//   WOLF,
+//   DOG,
+//   LEOPARD,
+//   TIGER,
+//   LION,
+//   ELEPHANT,
+//   TRAP,
+//   DEN,
+//   RIVER
+// }
 
 // enum EnvironmentType {
 //
