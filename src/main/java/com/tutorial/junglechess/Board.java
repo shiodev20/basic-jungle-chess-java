@@ -104,11 +104,24 @@ public class Board {
         } else if (this.getPieceAt(toX, toY) != null && this.getPieceAt(toX, toY).isPlayable()) {
           // PlayablePiece >< PlayablePiece
           
+          PlayablePiece targetPiece = (PlayablePiece) this.getPieceAt(toX, toY);
 
+          if(movedPiece.getSide() != targetPiece.getSide())  {
+            if(
+              (movedPiece.getRank().getValue() >= targetPiece.getRank().getValue()) ||
+              (movedPiece.getRank().getValue() == 1 && targetPiece.getRank().getValue() == 8)
+            ) {
+                this.pieces.remove(movedPiece);
+                this.pieces.remove(targetPiece);
+                this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
+            }
+          }
 
           this.trackRivers();
+
         } else {
           // PlayablePiece >< Nothing
+
           this.pieces.remove(movedPiece);
           this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
 

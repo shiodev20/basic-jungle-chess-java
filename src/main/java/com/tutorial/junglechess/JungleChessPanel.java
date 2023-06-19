@@ -8,7 +8,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -30,7 +29,6 @@ public class JungleChessPanel extends JPanel implements MouseListener {
   final static int COLS = 8;
   private int orgX = 0, orgY = 0, side = 80;
   private Point pressedPoint;
-
   private Board board;
 
   public JungleChessPanel() {
@@ -57,6 +55,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
     }
   }
 
+
   private void drawBoard(Graphics g) {
     for (int i = 0; i < COLS; i++) {
       g.drawLine(orgX + i * side, orgY, orgX + i * side, orgY + (ROWS - 1) * side);
@@ -67,6 +66,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
     }
   }
 
+  
   private void drawPieces(Graphics g) throws IOException {
     for (Piece piece : this.board.getPieces()) {
       if (piece.getImageName() != null) {
@@ -76,6 +76,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
       }
     }
   }
+
 
   private void drawEnvironments(Graphics g) throws IOException {
     File riverFile = new File("res/river.gif");
