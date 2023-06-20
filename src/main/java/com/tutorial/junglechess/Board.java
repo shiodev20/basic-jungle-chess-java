@@ -18,6 +18,8 @@ public class Board {
   final static int[] yMarks = { 0, 80, 160, 240, 320, 400, 480, 560, 640, 720 };
 
   private Set<Piece> pieces = new HashSet<>();
+  private int totalBlackPiece = 8, totalRedPiece = 8;
+  private boolean isBlackMove = true;
 
   public Board() {
     // Trap
@@ -76,64 +78,80 @@ public class Board {
       if (this.getPieceAt(fromX, fromY) != null && this.getPieceAt(fromX, fromY).isPlayable()) {
         PlayablePiece movedPiece = (PlayablePiece) this.getPieceAt(fromX, fromY);
 
-        if (this.getPieceAt(toX, toY) != null && !this.getPieceAt(toX, toY).isPlayable()) {
-          // PlayablePiece >< EnvironmentPiece
+        if (movedPiece.getSide() == this.isBlackMove) {
 
-          EnvironmentPiece environmentPiece = (EnvironmentPiece) this.getPieceAt(toX, toY);
+          if (this.getPieceAt(toX, toY) != null && !this.getPieceAt(toX, toY).isPlayable()) {
+            // PlayablePiece >< EnvironmentPiece
 
-          switch (environmentPiece.getRank()) {
-            case RIVER:
-              if (movedPiece.isRiverPassable()) {
-                this.pieces.remove(movedPiece);
-                this.pieces.remove(environmentPiece);
+            EnvironmentPiece environmentPiece = (EnvironmentPiece) this.getPieceAt(toX, toY);
 
-                PlayablePiece newPiece = new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName());
-                this.pieces.add(newPiece);
+            switch (environmentPiece.getRank()) {
+              case RIVER:
+                if (movedPiece.isRiverPassable()) {
+                  this.pieces.remove(movedPiece);
+                  this.pieces.remove(environmentPiece);
 
-                this.trackEnvironments();
-              }
-              break;
+                  PlayablePiece newPiece = new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName());
+                  this.pieces.add(newPiece);
 
-            case TRAP:
-              if(this.getSideOfTrap(environmentPiece) != movedPiece.getSide()) {
-                this.pieces.remove(movedPiece);
-                this.pieces.remove(environmentPiece);
+                  this.isBlackMove = !this.isBlackMove;
+                }
+                break;
 
-                PlayablePiece newPiece = new PlayablePiece(toX, toY, Rank.DISABLED, movedPiece.getSide(), movedPiece.getImageName());
-                this.pieces.add(newPiece);
-              }
-              
-              break;
+              case TRAP:
+                if (this.getSideOfTrap(environmentPiece) != movedPiece.getSide()) {
+                  this.pieces.remove(movedPiece);
+                  this.pieces.remove(environmentPiece);
 
-            case DEN:
-              break;
-          }
+                  PlayablePiece newPiece = new PlayablePiece(toX, toY, Rank.DISABLED, movedPiece.getSide(), movedPiece.getImageName());
+                  this.pieces.add(newPiece);
+                }
+                break;
 
-        } else if (this.getPieceAt(toX, toY) != null && this.getPieceAt(toX, toY).isPlayable()) {
-          // PlayablePiece >< PlayablePiece
+              case DEN:
+                break;
+            }
 
-          PlayablePiece targetPiece = (PlayablePiece) this.getPieceAt(toX, toY);
+            this.trackPieceTotal();
+            this.trackEnvironments();
+            this.trackMove();
 
-          if(movedPiece.getSide() != targetPiece.getSide())  {
-            if(
-              (movedPiece.getRank().getValue() >= targetPiece.getRank().getValue()) ||
-              (movedPiece.getRank().getValue() == 1 && targetPiece.getRank().getValue() == 8)
-            ) {
+          } else if (this.getPieceAt(toX, toY) != null && this.getPieceAt(toX, toY).isPlayable()) {
+            // PlayablePiece >< PlayablePiece
+
+            PlayablePiece targetPiece = (PlayablePiece) this.getPieceAt(toX, toY);
+
+            if (movedPiece.getSide() != targetPiece.getSide()) {
+              if ((movedPiece.getRank().getValue() >= targetPiece.getRank().getValue()) ||
+                  (movedPiece.getRank().getValue() == 1 && targetPiece.getRank().getValue() == 8)) {
                 this.pieces.remove(movedPiece);
                 this.pieces.remove(targetPiece);
-                this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
+                this.pieces.add(
+                    new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
+
+                if (targetPiece.getSide())
+                  this.totalBlackPiece -= 1;
+                else
+                  this.totalRedPiece -= 1;
+              }
             }
+
+            this.trackPieceTotal();
+            this.trackEnvironments();
+            this.trackMove();
+
+
+          } else {
+            // PlayablePiece >< Nothing
+
+            this.pieces.remove(movedPiece);
+            this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
+
+            this.trackPieceTotal();
+            this.trackEnvironments();
+            this.trackMove();
           }
 
-          this.trackEnvironments();
-
-        } else {
-          // PlayablePiece >< Nothing
-
-          this.pieces.remove(movedPiece);
-          this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
-
-          this.trackEnvironments();  
         }
 
       }
@@ -173,7 +191,8 @@ public class Board {
     Set<Piece> pieces = new HashSet<>();
 
     for (Piece piece : this.getPieces()) {
-      if(piece.getRank() == Rank.TRAP) pieces.add(piece);
+      if (piece.getRank() == Rank.TRAP)
+        pieces.add(piece);
     }
 
     return pieces;
@@ -183,7 +202,8 @@ public class Board {
     Set<Piece> pieces = new HashSet<>();
 
     for (Piece piece : this.getPieces()) {
-      if(piece.getRank() == Rank.DEN) pieces.add(piece);
+      if (piece.getRank() == Rank.DEN)
+        pieces.add(piece);
     }
 
     return pieces;
@@ -212,7 +232,7 @@ public class Board {
     }
     return yMarks[idx];
   }
- 
+
   public Set<Point> getTrapPoints() {
     Set<Point> points = new HashSet<Point>();
 
@@ -253,10 +273,19 @@ public class Board {
     }
   }
 
+  public void trackPieceTotal() {
+    System.out.println("Black: " + this.totalBlackPiece + " - " + "Red: " + this.totalRedPiece);
+  }
+
+  public void trackMove() {
+    this.isBlackMove = !this.isBlackMove;
+  }
+
   public boolean getSideOfTrap(EnvironmentPiece piece) {
     boolean isBlack = true;
 
-    if(piece.getY() <= 240) isBlack = false;
+    if (piece.getY() <= 240)
+      isBlack = false;
 
     return isBlack;
   }
