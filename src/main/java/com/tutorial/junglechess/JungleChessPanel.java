@@ -80,22 +80,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
 
   private void drawEnvironments(Graphics g) throws IOException {
     File riverFile = new File("res/river.gif");
-    File denFile = new File("res/den.gif");
-    File trapFile = new File("res/trap.gif");
-
     BufferedImage riverImage = ImageIO.read(riverFile);
-    BufferedImage denImage = ImageIO.read(denFile);
-    BufferedImage trapImage = ImageIO.read(trapFile);
-
-    g.drawImage(trapImage, 240, 560, this);
-    g.drawImage(trapImage, 160, 640, this);
-    g.drawImage(trapImage, 320, 640, this);
-    g.drawImage(trapImage, 240, 80, this);
-    g.drawImage(trapImage, 160, 0, this);
-    g.drawImage(trapImage, 320, 0, this);
-
-    g.drawImage(denImage, 240, 0, this);
-    g.drawImage(denImage, 240, 640, this);
 
     for (Point point : this.board.getRiverPoints()) {
       g.drawImage(riverImage, (int)point.getX(), (int)point.getY(), this);
@@ -104,6 +89,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
 
   @Override
   public void mouseClicked(MouseEvent e) {
+    System.out.println(this.board.getPieceAt(this.board.getXMark(e.getPoint().x), this.board.getYMark(e.getPoint().y)).getRank());
   }
 
   @Override

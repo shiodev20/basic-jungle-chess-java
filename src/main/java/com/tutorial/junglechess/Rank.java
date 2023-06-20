@@ -11,8 +11,9 @@ public enum Rank {
   ELEPHANT(8),
   TRAP(0),
   DEN(0),
-  RIVER(0);
-
+  RIVER(0),
+  DISABLED(0);
+  
   private int value;
 
   Rank(int value) {

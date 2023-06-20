@@ -21,16 +21,16 @@ public class Board {
 
   public Board() {
     // Trap
-    pieces.add(new EnvironmentPiece(240, 560, Rank.TRAP));
-    pieces.add(new EnvironmentPiece(160, 640, Rank.TRAP));
-    pieces.add(new EnvironmentPiece(320, 640, Rank.TRAP));
-    pieces.add(new EnvironmentPiece(240, 80, Rank.TRAP));
-    pieces.add(new EnvironmentPiece(160, 0, Rank.TRAP));
-    pieces.add(new EnvironmentPiece(320, 0, Rank.TRAP));
+    pieces.add(new EnvironmentPiece(240, 560, Rank.TRAP, "res/trap.gif"));
+    pieces.add(new EnvironmentPiece(160, 640, Rank.TRAP, "res/trap.gif"));
+    pieces.add(new EnvironmentPiece(320, 640, Rank.TRAP, "res/trap.gif"));
+    pieces.add(new EnvironmentPiece(240, 80, Rank.TRAP, "res/trap.gif"));
+    pieces.add(new EnvironmentPiece(160, 0, Rank.TRAP, "res/trap.gif"));
+    pieces.add(new EnvironmentPiece(320, 0, Rank.TRAP, "res/trap.gif"));
 
     // Den
-    pieces.add(new EnvironmentPiece(240, 640, Rank.DEN));
-    pieces.add(new EnvironmentPiece(240, 0, Rank.DEN));
+    pieces.add(new EnvironmentPiece(240, 640, Rank.DEN, "res/den.gif"));
+    pieces.add(new EnvironmentPiece(240, 0, Rank.DEN, "res/den.gif"));
 
     // River
     pieces.add(new EnvironmentPiece(80, 240, Rank.RIVER));
@@ -95,11 +95,14 @@ public class Board {
               break;
 
             case TRAP:
-              this.pieces.remove(movedPiece);
-              this.pieces.remove(environmentPiece);
+              if(this.getSideOfTrap(environmentPiece) != movedPiece.getSide()) {
+                this.pieces.remove(movedPiece);
+                this.pieces.remove(environmentPiece);
+
+                PlayablePiece newPiece = new PlayablePiece(toX, toY, Rank.DISABLED, movedPiece.getSide(), movedPiece.getImageName());
+                this.pieces.add(newPiece);
+              }
               
-              PlayablePiece newPiece = new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName());
-              this.pieces.add(newPiece);
               break;
 
             case DEN:
@@ -166,6 +169,26 @@ public class Board {
     return this.pieces;
   }
 
+  public Set<Piece> getTrapPieces() {
+    Set<Piece> pieces = new HashSet<>();
+
+    for (Piece piece : this.getPieces()) {
+      if(piece.getRank() == Rank.TRAP) pieces.add(piece);
+    }
+
+    return pieces;
+  }
+
+  public Set<Piece> getDenPieces() {
+    Set<Piece> pieces = new HashSet<>();
+
+    for (Piece piece : this.getPieces()) {
+      if(piece.getRank() == Rank.DEN) pieces.add(piece);
+    }
+
+    return pieces;
+  }
+
   public int getXMark(int x) {
     int idx = 0;
 
@@ -189,6 +212,19 @@ public class Board {
     }
     return yMarks[idx];
   }
+ 
+  public Set<Point> getTrapPoints() {
+    Set<Point> points = new HashSet<Point>();
+
+    points.add(new Point(160, 0));
+    points.add(new Point(240, 80));
+    points.add(new Point(320, 0));
+    points.add(new Point(240, 560));
+    points.add(new Point(160, 640));
+    points.add(new Point(320, 640));
+
+    return points;
+  }
 
   public Set<Point> getRiverPoints() {
     Set<Point> points = new HashSet<Point>();
@@ -208,19 +244,6 @@ public class Board {
 
     return points;
   }
- 
-  public Set<Point> getTrapPoints() {
-    Set<Point> points = new HashSet<Point>();
-
-    points.add(new Point(160, 0));
-    points.add(new Point(240, 80));
-    points.add(new Point(320, 0));
-    points.add(new Point(240, 560));
-    points.add(new Point(160, 640));
-    points.add(new Point(320, 640));
-
-    return points;
-  }
 
   public void trackEnvironments() {
     for (Point point : this.getRiverPoints()) {
@@ -228,19 +251,13 @@ public class Board {
         pieces.add(new EnvironmentPiece(point.x, point.y, Rank.RIVER));
       }
     }
-
-    for (Point point : this.getTrapPoints()) {
-      if (this.getPieceAt(point.x, point.y) == null) {
-        pieces.add(new EnvironmentPiece(point.x, point.y, Rank.RIVER));
-      }
-    }
   }
 
-  // public void trackRivers() {
-  //   for (Point point : this.getRiverPoints()) {
-  //     if (this.getPieceAt(point.x, point.y) == null) {
-  //       pieces.add(new EnvironmentPiece(point.x, point.y, Rank.RIVER));
-  //     }
-  //   }
-  // }
+  public boolean getSideOfTrap(EnvironmentPiece piece) {
+    boolean isBlack = true;
+
+    if(piece.getY() <= 240) isBlack = false;
+
+    return isBlack;
+  }
 }
