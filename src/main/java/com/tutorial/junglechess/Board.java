@@ -20,6 +20,7 @@ public class Board {
   private Set<Piece> pieces = new HashSet<>();
   private int totalBlackPiece = 8, totalRedPiece = 8;
   private boolean isBlackMove = true;
+  private String winSide = null;
 
   public Board() {
     // Trap
@@ -109,7 +110,7 @@ public class Board {
                 break;
 
               case DEN:
-                
+                this.winSide = movedPiece.getSide() ? "black" : "red";
                 break;
             }
             
@@ -278,17 +279,15 @@ public class Board {
   }
 
   public void trackPieceTotal() {
-    System.out.println("Black: " + this.totalBlackPiece + " - " + "Red: " + this.totalRedPiece);
+    if(this.totalBlackPiece == 0) this.winSide = "red";
+    if(this.totalRedPiece == 0) this.winSide = "black";
   }
 
   public void trackMove() {
     this.isBlackMove = !this.isBlackMove;
-
-    if (this.isBlackMove) {
-      System.out.println("Black");
-    } else {
-      System.out.println("Red");
-    }
   }
 
+  public String trackWin() {
+    return this.winSide;
+  }
 }

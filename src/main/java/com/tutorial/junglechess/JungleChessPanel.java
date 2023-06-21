@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -33,8 +34,6 @@ public class JungleChessPanel extends JPanel implements MouseListener {
 
   public JungleChessPanel() {
     this.setBackground(Color.white);
-    this.setSize(800, 800);
-
     this.board = new Board();
     addMouseListener(this);
   }
@@ -55,7 +54,6 @@ public class JungleChessPanel extends JPanel implements MouseListener {
     }
   }
 
-
   private void drawBoard(Graphics g) {
     for (int i = 0; i < COLS; i++) {
       g.drawLine(orgX + i * side, orgY, orgX + i * side, orgY + (ROWS - 1) * side);
@@ -66,7 +64,6 @@ public class JungleChessPanel extends JPanel implements MouseListener {
     }
   }
 
-  
   private void drawPieces(Graphics g) throws IOException {
     for (Piece piece : this.board.getPieces()) {
       if (piece.getImageName() != null) {
@@ -77,19 +74,19 @@ public class JungleChessPanel extends JPanel implements MouseListener {
     }
   }
 
-
   private void drawEnvironments(Graphics g) throws IOException {
     File riverFile = new File("res/river.gif");
     BufferedImage riverImage = ImageIO.read(riverFile);
 
     for (Point point : this.board.getRiverPoints()) {
-      g.drawImage(riverImage, (int)point.getX(), (int)point.getY(), this);
+      g.drawImage(riverImage, (int) point.getX(), (int) point.getY(), this);
     }
   }
 
   @Override
   public void mouseClicked(MouseEvent e) {
-    System.out.println(this.board.getPieceAt(this.board.getXMark(e.getPoint().x), this.board.getYMark(e.getPoint().y)).getRank());
+    System.out.println(
+        this.board.getPieceAt(this.board.getXMark(e.getPoint().x), this.board.getYMark(e.getPoint().y)).getRank());
   }
 
   @Override
@@ -102,6 +99,16 @@ public class JungleChessPanel extends JPanel implements MouseListener {
     Point targetPoint = new Point(board.getXMark(e.getPoint().x), board.getYMark(e.getPoint().y));
     this.board.movePiece(this.pressedPoint.x, this.pressedPoint.y, targetPoint.x, targetPoint.y);
     repaint();
+    
+    if (this.board.trackWin() == "black") {
+      JOptionPane.showMessageDialog(null, "Bên đen chiến thắng");
+      this.restart();
+    } 
+    
+    if (this.board.trackWin() == "red") {
+      JOptionPane.showMessageDialog(null, "Bên đỏ chiến thắng");
+      this.restart();
+    }
   }
 
   @Override
@@ -111,4 +118,10 @@ public class JungleChessPanel extends JPanel implements MouseListener {
   @Override
   public void mouseExited(MouseEvent e) {
   }
+
+  public void restart() {
+    this.board = new Board();
+    repaint();
+  }
+
 }
