@@ -120,7 +120,7 @@ public class JungleChess {
   }
 
   public static void main(String[] args) {
-    JungleChess jungleChess = new JungleChess();
+    new JungleChess();
   }
 
 }

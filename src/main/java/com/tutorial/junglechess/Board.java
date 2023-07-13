@@ -9,19 +9,16 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-/**
- *
- * @author nghin
- */
+
 public class Board {
 
-  final static int[] xMarks = { 0, 80, 160, 240, 320, 400, 480, 560 };
-  final static int[] yMarks = { 0, 80, 160, 240, 320, 400, 480, 560, 640, 720 };
+  private int[] xMarks = { 0, 80, 160, 240, 320, 400, 480, 560 };
+  private int[] yMarks = { 0, 80, 160, 240, 320, 400, 480, 560, 640, 720 };
 
   private Set<Piece> pieces = new HashSet<>();
   private int totalBlackPiece = 8, totalRedPiece = 8;
   private boolean isBlackMove = true;
-  private String winSide = null;
+  private String winSide = "";
 
   public StepStack stepStack = new StepStack();
 
@@ -74,6 +71,7 @@ public class Board {
 
     this.trackStepStack(this.pieces);
   }
+
 
   public void movePiece(int fromX, int fromY, int toX, int toY) {
     boolean isValidStep = this.isValidStep(fromX, fromY, toX, toY);
@@ -195,6 +193,7 @@ public class Board {
     }
   }
 
+
   public boolean isValidStep(int fromX, int fromY, int toX, int toY) {
     int steps = 0;
 
@@ -207,9 +206,6 @@ public class Board {
     return steps == 1;
   }
 
-  public boolean isSelfKill(PlayablePiece movedPiece, PlayablePiece targetPiece) {
-    return movedPiece.getSide() == targetPiece.getSide();
-  }
 
   public Piece getPieceAt(int x, int y) {
     for (Piece piece : this.getPieces()) {
@@ -220,33 +216,11 @@ public class Board {
     return null;
   }
 
+
   public Set<Piece> getPieces() {
     return this.pieces;
   }
 
-  public Set<Piece> getTrapPieces() {
-    Set<Piece> pieces = new HashSet<>();
-
-    for (Piece piece : this.getPieces()) {
-      if (piece.getRank() == Rank.TRAP) {
-        pieces.add(piece);
-      }
-    }
-
-    return pieces;
-  }
-
-  public Set<Piece> getDenPieces() {
-    Set<Piece> pieces = new HashSet<>();
-
-    for (Piece piece : this.getPieces()) {
-      if (piece.getRank() == Rank.DEN) {
-        pieces.add(piece);
-      }
-    }
-
-    return pieces;
-  }
 
   public int getXMark(int x) {
     int idx = 0;
@@ -260,6 +234,7 @@ public class Board {
     return xMarks[idx];
   }
 
+
   public int getYMark(int y) {
     int idx = 0;
 
@@ -272,18 +247,47 @@ public class Board {
     return yMarks[idx];
   }
 
-  public Set<Point> getTrapPoints() {
-    Set<Point> points = new HashSet<>();
+  // public Set<Point> getTrapPoints() {
+  //   Set<Point> points = new HashSet<>();
 
-    points.add(new Point(160, 0));
-    points.add(new Point(240, 80));
-    points.add(new Point(320, 0));
-    points.add(new Point(240, 560));
-    points.add(new Point(160, 640));
-    points.add(new Point(320, 640));
+  //   points.add(new Point(160, 0));
+  //   points.add(new Point(240, 80));
+  //   points.add(new Point(320, 0));
+  //   points.add(new Point(240, 560));
+  //   points.add(new Point(160, 640));
+  //   points.add(new Point(320, 640));
 
-    return points;
-  }
+  //   return points;
+  // }
+
+  // public Set<Piece> getDenPieces() {
+  //   Set<Piece> pieces = new HashSet<>();
+
+  //   for (Piece piece : this.getPieces()) {
+  //     if (piece.getRank() == Rank.DEN) {
+  //       pieces.add(piece);
+  //     }
+  //   }
+
+  //   return pieces;
+  // }
+
+  // public boolean isSelfKill(PlayablePiece movedPiece, PlayablePiece targetPiece) {
+  //   return movedPiece.getSide() == targetPiece.getSide();
+  // }
+
+  // public Set<Piece> getTrapPieces() {
+  //   Set<Piece> pieces = new HashSet<>();
+
+  //   for (Piece piece : this.getPieces()) {
+  //     if (piece.getRank() == Rank.TRAP) {
+  //       pieces.add(piece);
+  //     }
+  //   }
+
+  //   return pieces;
+  // }
+
 
   public Set<Point> getRiverPoints() {
     Set<Point> points = new HashSet<>();
@@ -304,6 +308,12 @@ public class Board {
     return points;
   }
 
+
+  public boolean getMoveSide() {
+    return this.isBlackMove;
+  }
+
+
   public boolean getSideOfTrap(EnvironmentPiece piece) {
     boolean isBlack = true;
 
@@ -314,6 +324,7 @@ public class Board {
     return isBlack;
   }
 
+
   public void trackEnvironments() {
     for (Point point : this.getRiverPoints()) {
       if (this.getPieceAt(point.x, point.y) == null) {
@@ -321,6 +332,7 @@ public class Board {
       }
     }
   }
+
 
   public void trackPieceTotal() {
     if (this.totalBlackPiece == 0) {
@@ -331,17 +343,21 @@ public class Board {
     }
   }
 
+
   public void trackMove() {
     this.isBlackMove = !this.isBlackMove;
   }
+
 
   public String trackWin() {
     return this.winSide;
   }
 
+
   public void trackStepStack(Set<Piece> pieces) {
     this.stepStack.pushToStepStack(this.pieces);
   }
+
 
   public void handleBackStep() {
     if (this.stepStack.getStepStack().size() > 1) {
@@ -351,6 +367,7 @@ public class Board {
     }
   }
 
+  
   public void playSoundEffect(String location) {
     try {
       File soundPath = new File(location);
@@ -371,7 +388,4 @@ public class Board {
     }
   }
 
-  public boolean getMoveSide() {
-    return this.isBlackMove;
-  }
 }
