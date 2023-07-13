@@ -11,12 +11,12 @@ package com.tutorial.junglechess;
 
 public abstract class Piece {
 
-  int x, y;
-  String imageName;
-  Rank rank;
-  boolean playable = true;
+  private int x, y;
+  private String imageName;
+  private Rank rank;
+  private boolean playable = true;
 
-  Piece(int x, int y, Rank rank) {
+  public Piece(int x, int y, Rank rank) {
     this.x = x;
     this.y = y;
     this.rank = rank;
@@ -24,7 +24,7 @@ public abstract class Piece {
       this.playable = false;
   }
 
-  Piece(int x, int y, Rank rank, String imageName) {
+  public Piece(int x, int y, Rank rank, String imageName) {
     this(x, y, rank);
     this.imageName = imageName;
   }

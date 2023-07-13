@@ -17,7 +17,7 @@ public class PlayablePiece extends Piece {
   public PlayablePiece(int x, int y, Rank rank, boolean isBlack, String imageName) {
     super(x, y, rank, imageName);
     this.isBlack = isBlack;
-    if (this.rank == Rank.MOUSE) this.isRiverPassable = true;
+    if (this.getRank() == Rank.MOUSE) this.isRiverPassable = true;
   }
 
   public boolean getSide() {
@@ -29,10 +29,6 @@ public class PlayablePiece extends Piece {
   }
 
   public boolean isTrapped() {
-    return isTrapped;
-  }
-
-  public void setIsTrapped() {
-    
+    return this.isTrapped;
   }
 }
