@@ -45,7 +45,6 @@ public class JungleChessPanel extends JPanel implements MouseListener {
         this.board = new Board();
         addMouseListener(this);
 
-
     }
 
 
