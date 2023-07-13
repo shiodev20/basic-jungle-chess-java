@@ -35,12 +35,12 @@ public class JungleChessPanel extends JPanel implements MouseListener {
     private Board board;
 
     
-    
     public JungleChessPanel() {
         this.setBackground(Color.white);
         this.board = new Board();
         addMouseListener(this);
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -58,7 +58,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
         }
     }
 
-    
+
     private void drawBoard(Graphics g) {
         for (int i = 0; i < COLS; i++) {
             g.drawLine(orgX + i * side, orgY, orgX + i * side, orgY + (ROWS - 1) * side);
@@ -69,9 +69,9 @@ public class JungleChessPanel extends JPanel implements MouseListener {
         }
     }
 
-    
+
     private void drawPieces(Graphics g) throws IOException {
-        for (Piece piece : this.board.getPieces()) {
+        for (Piece piece : this.board.stepStack.getStepStack().peek()) {
             if (piece.getImageName() != null) {
                 File imageFile = new File(piece.getImageName());
                 BufferedImage image = ImageIO.read(imageFile);
@@ -80,7 +80,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
         }
     }
 
-    
+
     private void drawEnvironments(Graphics g) throws IOException {
         File riverFile = new File("res/river.gif");
         BufferedImage riverImage = ImageIO.read(riverFile);
@@ -90,26 +90,22 @@ public class JungleChessPanel extends JPanel implements MouseListener {
         }
     }
 
-    
+
     @Override
     public void mouseClicked(MouseEvent e) {
     }
 
-    
+
     @Override
     public void mousePressed(MouseEvent e) {
         this.pressedPoint = new Point(this.board.getXMark(e.getPoint().x), this.board.getYMark(e.getPoint().y));
     }
 
-    
+
     @Override
     public void mouseReleased(MouseEvent e) {
         Point targetPoint = new Point(board.getXMark(e.getPoint().x), board.getYMark(e.getPoint().y));
         this.board.movePiece(this.pressedPoint.x, this.pressedPoint.y, targetPoint.x, targetPoint.y);
-        
-//        System.out.println(this.board.stepStack.size());
-        this.board.printPieces();
-
         repaint();
 
         if (this.board.trackWin() == "black") {
@@ -123,7 +119,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
         }
     }
 
-    
+
     @Override
     public void mouseEntered(MouseEvent e) {
     }
@@ -132,13 +128,12 @@ public class JungleChessPanel extends JPanel implements MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    
     public void restart() {
         this.board = new Board();
         repaint();
     }
-    
-    
+
+
     public void backStep() {
         this.board.handleBackStep();
         repaint();

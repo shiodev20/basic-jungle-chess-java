@@ -20,67 +20,67 @@ import javax.swing.JPanel;
  */
 public class JungleChess {
 
-    JButton resetBtn = new JButton("Chơi mới");
-    JButton backStepBtn = new JButton("Lùi 1 bước");
-    JButton exitBtn = new JButton("Thoát");
+  JButton resetBtn = new JButton("Chơi mới");
+  JButton backStepBtn = new JButton("Lùi 1 bước");
+  JButton exitBtn = new JButton("Thoát");
 
-    public JungleChess() {
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+  public JungleChess() {
+    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
-        JFrame jungleChessFrame = new JFrame("Cờ Thú");
-        jungleChessFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        jungleChessFrame.setLayout(new BorderLayout());
+    JFrame jungleChessFrame = new JFrame("Cờ Thú");
+    jungleChessFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    jungleChessFrame.setLayout(new BorderLayout());
 
-        JungleChessPanel jungleChessPanel = new JungleChessPanel();
-        jungleChessFrame.add(jungleChessPanel, BorderLayout.CENTER);
+    JungleChessPanel jungleChessPanel = new JungleChessPanel();
+    jungleChessFrame.add(jungleChessPanel, BorderLayout.CENTER);
 
-        JPanel panel1 = new JPanel();
-        panel1.setBackground(Color.WHITE);
-        panel1.setPreferredSize(new Dimension(470, 100));
+    JPanel panel1 = new JPanel();
+    panel1.setBackground(Color.WHITE);
+    panel1.setPreferredSize(new Dimension(470, 100));
 
-        JPanel panel2 = new JPanel();
-        panel2.setBackground(Color.WHITE);
-        panel2.setPreferredSize(new Dimension(500, 100));
+    JPanel panel2 = new JPanel();
+    panel2.setBackground(Color.WHITE);
+    panel2.setPreferredSize(new Dimension(500, 100));
 
-        JPanel panel3 = new JPanel();
-        panel3.setBackground(Color.WHITE);
-        panel3.setPreferredSize(new Dimension(100, (int) (dim.getHeight() * 0.07)));
+    JPanel panel3 = new JPanel();
+    panel3.setBackground(Color.WHITE);
+    panel3.setPreferredSize(new Dimension(100, (int) (dim.getHeight() * 0.07)));
 
-        jungleChessFrame.add(panel1, BorderLayout.WEST);
-        jungleChessFrame.add(panel2, BorderLayout.EAST);
-        jungleChessFrame.add(panel3, BorderLayout.SOUTH);
+    jungleChessFrame.add(panel1, BorderLayout.WEST);
+    jungleChessFrame.add(panel2, BorderLayout.EAST);
+    jungleChessFrame.add(panel3, BorderLayout.SOUTH);
 
-        panel2.add(backStepBtn);
-        panel3.add(resetBtn);
-        panel3.add(exitBtn);
+    panel3.add(backStepBtn);
+    panel3.add(resetBtn);
+    panel3.add(exitBtn);
 
-        resetBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                jungleChessPanel.restart();
-            }
-        });
+    resetBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        jungleChessPanel.restart();
+      }
+    });
 
-        backStepBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                jungleChessPanel.backStep();
-            }
+    backStepBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        jungleChessPanel.backStep();
+      }
 
-        });
+    });
 
-        exitBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+    exitBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        System.exit(0);
+      }
+    });
 
-        jungleChessFrame.setVisible(true);
-    }
+    jungleChessFrame.setVisible(true);
+  }
 
-    public static void main(String[] args) {
-        JungleChess jungleChess = new JungleChess();
-    }
+  public static void main(String[] args) {
+    JungleChess jungleChess = new JungleChess();
+  }
 
 }
