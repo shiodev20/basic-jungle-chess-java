@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -34,11 +35,17 @@ public class JungleChessPanel extends JPanel implements MouseListener {
     private Point pressedPoint;
     private Board board;
 
+    JLabel moveSideLabel = new JLabel();
     
-    public JungleChessPanel() {
+    public JungleChessPanel(JLabel label) {
+
+        moveSideLabel = label;
+
         this.setBackground(Color.white);
         this.board = new Board();
         addMouseListener(this);
+
+
     }
 
 
@@ -53,6 +60,16 @@ public class JungleChessPanel extends JPanel implements MouseListener {
         try {
             drawEnvironments(g);
             drawPieces(g);
+
+            if (this.board.getMoveSide()) {
+                moveSideLabel.setText("Bên đen đi");
+                moveSideLabel.setForeground(Color.BLACK);
+            }
+            else {
+                moveSideLabel.setText("Bên đỏ đi");
+                moveSideLabel.setForeground(Color.RED);
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(JungleChessPanel.class.getName()).log(Level.SEVERE, null, ex);
         }

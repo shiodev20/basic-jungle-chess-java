@@ -327,4 +327,8 @@ public class Board {
     }
   }
 
+  
+  public boolean getMoveSide() {
+    return this.isBlackMove;
+  }
 }
