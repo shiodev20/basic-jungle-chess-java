@@ -9,7 +9,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-
 public class Board {
 
   private int[] xMarks = { 0, 80, 160, 240, 320, 400, 480, 560 };
@@ -72,7 +71,6 @@ public class Board {
     this.trackStepStack(this.pieces);
   }
 
-
   public void movePiece(int fromX, int fromY, int toX, int toY) {
     boolean isValidStep = this.isValidStep(fromX, fromY, toX, toY);
 
@@ -95,7 +93,8 @@ public class Board {
                   this.pieces.remove(movedPiece);
                   this.pieces.remove(environmentPiece);
 
-                  PlayablePiece newPiece = new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName());
+                  PlayablePiece newPiece = new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(),
+                      movedPiece.getImageName());
                   this.pieces.add(newPiece);
 
                   this.trackMove();
@@ -107,7 +106,8 @@ public class Board {
                   this.pieces.remove(movedPiece);
                   this.pieces.remove(environmentPiece);
 
-                  PlayablePiece newPiece = new PlayablePiece(toX, toY, Rank.DISABLED, movedPiece.getSide(), movedPiece.getImageName());
+                  PlayablePiece newPiece = new PlayablePiece(toX, toY, Rank.DISABLED, movedPiece.getSide(),
+                      movedPiece.getImageName());
                   this.pieces.add(newPiece);
                   this.trackMove();
                 }
@@ -120,25 +120,24 @@ public class Board {
             }
 
             this.playSoundEffect(Sound.MOVE.getValue());
-          
-          } 
-          else if (this.getPieceAt(toX, toY) != null && this.getPieceAt(toX, toY).isPlayable()) {
+
+          } else if (this.getPieceAt(toX, toY) != null && this.getPieceAt(toX, toY).isPlayable()) {
             // PlayablePiece >< PlayablePiece
 
             PlayablePiece targetPiece = (PlayablePiece) this.getPieceAt(toX, toY);
 
             if (movedPiece.getSide() != targetPiece.getSide()) {
 
-              if(movedPiece.getRank() != Rank.ELEPHANT && movedPiece.getRank() != Rank.MOUSE) {
-
-                if ((movedPiece.getRank().getValue() == 1 && targetPiece.getRank().getValue() == 8) || (movedPiece.getRank().getValue() >= targetPiece.getRank().getValue())) {
-
-              }
-
+              if (
+                  ((movedPiece.getRank().getValue() >= targetPiece.getRank().getValue()) && (movedPiece.getRank().getValue() != 8 && targetPiece.getRank().getValue() != 1))
+                  || 
+                  (movedPiece.getRank().getValue() == 1 && targetPiece.getRank().getValue() == 8)
+              ) {
 
                 this.pieces.remove(movedPiece);
                 this.pieces.remove(targetPiece);
-                this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
+                this.pieces.add(
+                    new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
 
                 if (targetPiece.getSide()) {
                   this.totalBlackPiece -= 1;
@@ -174,33 +173,30 @@ public class Board {
                     this.playSoundEffect(Sound.ELEPHANT.getValue());
                     break;
                 }
-              
+
               }
 
             }
 
-          } 
-          else {
+          } else {
             // PlayablePiece >< Nothing
-
             this.pieces.remove(movedPiece);
             this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
 
             this.playSoundEffect(Sound.MOVE.getValue());
             this.trackMove();
           }
-
-
-          this.trackStepStack(this.pieces);
-          this.trackPieceTotal();
-          this.trackEnvironments();
+        
         }
 
+        this.trackStepStack(this.pieces);
+        this.trackPieceTotal();
+        this.trackEnvironments();
       }
 
     }
-  }
 
+  }
 
   public boolean isValidStep(int fromX, int fromY, int toX, int toY) {
     int steps = 0;
@@ -214,7 +210,6 @@ public class Board {
     return steps == 1;
   }
 
-
   public Piece getPieceAt(int x, int y) {
     for (Piece piece : this.getPieces()) {
       if (piece.getX() == x && piece.getY() == y) {
@@ -224,11 +219,9 @@ public class Board {
     return null;
   }
 
-
   public Set<Piece> getPieces() {
     return this.pieces;
   }
-
 
   public int getXMark(int x) {
     int idx = 0;
@@ -241,7 +234,6 @@ public class Board {
     }
     return xMarks[idx];
   }
-
 
   public int getYMark(int y) {
     int idx = 0;
@@ -256,46 +248,46 @@ public class Board {
   }
 
   // public Set<Point> getTrapPoints() {
-  //   Set<Point> points = new HashSet<>();
+  // Set<Point> points = new HashSet<>();
 
-  //   points.add(new Point(160, 0));
-  //   points.add(new Point(240, 80));
-  //   points.add(new Point(320, 0));
-  //   points.add(new Point(240, 560));
-  //   points.add(new Point(160, 640));
-  //   points.add(new Point(320, 640));
+  // points.add(new Point(160, 0));
+  // points.add(new Point(240, 80));
+  // points.add(new Point(320, 0));
+  // points.add(new Point(240, 560));
+  // points.add(new Point(160, 640));
+  // points.add(new Point(320, 640));
 
-  //   return points;
+  // return points;
   // }
 
   // public Set<Piece> getDenPieces() {
-  //   Set<Piece> pieces = new HashSet<>();
+  // Set<Piece> pieces = new HashSet<>();
 
-  //   for (Piece piece : this.getPieces()) {
-  //     if (piece.getRank() == Rank.DEN) {
-  //       pieces.add(piece);
-  //     }
-  //   }
-
-  //   return pieces;
+  // for (Piece piece : this.getPieces()) {
+  // if (piece.getRank() == Rank.DEN) {
+  // pieces.add(piece);
+  // }
   // }
 
-  // public boolean isSelfKill(PlayablePiece movedPiece, PlayablePiece targetPiece) {
-  //   return movedPiece.getSide() == targetPiece.getSide();
+  // return pieces;
+  // }
+
+  // public boolean isSelfKill(PlayablePiece movedPiece, PlayablePiece
+  // targetPiece) {
+  // return movedPiece.getSide() == targetPiece.getSide();
   // }
 
   // public Set<Piece> getTrapPieces() {
-  //   Set<Piece> pieces = new HashSet<>();
+  // Set<Piece> pieces = new HashSet<>();
 
-  //   for (Piece piece : this.getPieces()) {
-  //     if (piece.getRank() == Rank.TRAP) {
-  //       pieces.add(piece);
-  //     }
-  //   }
-
-  //   return pieces;
+  // for (Piece piece : this.getPieces()) {
+  // if (piece.getRank() == Rank.TRAP) {
+  // pieces.add(piece);
+  // }
   // }
 
+  // return pieces;
+  // }
 
   public Set<Point> getRiverPoints() {
     Set<Point> points = new HashSet<>();
@@ -316,11 +308,9 @@ public class Board {
     return points;
   }
 
-
   public boolean getMoveSide() {
     return this.isBlackMove;
   }
-
 
   public boolean getSideOfTrap(EnvironmentPiece piece) {
     boolean isBlack = true;
@@ -332,7 +322,6 @@ public class Board {
     return isBlack;
   }
 
-
   public void trackEnvironments() {
     for (Point point : this.getRiverPoints()) {
       if (this.getPieceAt(point.x, point.y) == null) {
@@ -340,7 +329,6 @@ public class Board {
       }
     }
   }
-
 
   public void trackPieceTotal() {
     if (this.totalBlackPiece == 0) {
@@ -351,21 +339,17 @@ public class Board {
     }
   }
 
-
   public void trackMove() {
     this.isBlackMove = !this.isBlackMove;
   }
-
 
   public String trackWin() {
     return this.winSide;
   }
 
-
   public void trackStepStack(Set<Piece> pieces) {
     this.stepStack.pushToStepStack(this.pieces);
   }
-
 
   public void handleBackStep() {
     if (this.stepStack.getStepStack().size() > 1) {
@@ -375,7 +359,6 @@ public class Board {
     }
   }
 
-  
   public void playSoundEffect(String location) {
     try {
       File soundPath = new File(location);
