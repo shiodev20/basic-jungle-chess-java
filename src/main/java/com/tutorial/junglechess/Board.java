@@ -128,7 +128,14 @@ public class Board {
             PlayablePiece targetPiece = (PlayablePiece) this.getPieceAt(toX, toY);
 
             if (movedPiece.getSide() != targetPiece.getSide()) {
-              if ((movedPiece.getRank().getValue() >= targetPiece.getRank().getValue()) || (movedPiece.getRank().getValue() == 1 && targetPiece.getRank().getValue() == 8)) {
+
+              if(movedPiece.getRank() != Rank.ELEPHANT && movedPiece.getRank() != Rank.MOUSE) {
+
+                if ((movedPiece.getRank().getValue() == 1 && targetPiece.getRank().getValue() == 8) || (movedPiece.getRank().getValue() >= targetPiece.getRank().getValue())) {
+
+              }
+
+
                 this.pieces.remove(movedPiece);
                 this.pieces.remove(targetPiece);
                 this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
@@ -169,6 +176,7 @@ public class Board {
                 }
               
               }
+
             }
 
           } 
