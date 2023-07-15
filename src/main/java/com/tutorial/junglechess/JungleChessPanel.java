@@ -69,7 +69,7 @@ public class JungleChessPanel extends JPanel implements MouseListener {
                 moveSideLabel.setForeground(Color.RED);
             }
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(JungleChessPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
