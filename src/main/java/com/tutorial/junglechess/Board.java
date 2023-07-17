@@ -129,49 +129,50 @@ public class Board {
             if (movedPiece.getSide() != targetPiece.getSide()) {
 
               if (
-                  ((movedPiece.getRank().getValue() >= targetPiece.getRank().getValue()) && (movedPiece.getRank().getValue() != 8 && targetPiece.getRank().getValue() != 1))
-                  || 
+                  (movedPiece.getRank().getValue() >= targetPiece.getRank().getValue()) ||
                   (movedPiece.getRank().getValue() == 1 && targetPiece.getRank().getValue() == 8)
               ) {
+                
+                if(movedPiece.getRank().getValue() == 8 && targetPiece.getRank().getValue() == 1) {
 
-                this.pieces.remove(movedPiece);
-                this.pieces.remove(targetPiece);
-                this.pieces.add(
-                    new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
-
-                if (targetPiece.getSide()) {
-                  this.totalBlackPiece -= 1;
-                } else {
-                  this.totalRedPiece -= 1;
                 }
+                else {
+                  this.pieces.remove(movedPiece);
+                  this.pieces.remove(targetPiece);
+                  this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
+  
+                  if (targetPiece.getSide()) this.totalBlackPiece -= 1;
+                  else this.totalRedPiece -= 1;
+  
+                  this.trackMove();
+  
+                  switch (movedPiece.getRank()) {
+                    case MOUSE:
+                      this.playSoundEffect(Sound.MOUSE.getValue());
+                      break;
+                    case CAT:
+                      this.playSoundEffect(Sound.CAT.getValue());
+                      break;
+                    case WOLF:
+                      this.playSoundEffect(Sound.WOLF.getValue());
+                      break;
+                    case DOG:
+                      this.playSoundEffect(Sound.DOG.getValue());
+                      break;
+                    case LEOPARD:
+                      this.playSoundEffect(Sound.LEOPARD.getValue());
+                      break;
+                    case TIGER:
+                      this.playSoundEffect(Sound.TIGER.getValue());
+                      break;
+                    case LION:
+                      this.playSoundEffect(Sound.LION.getValue());
+                      break;
+                    case ELEPHANT:
+                      this.playSoundEffect(Sound.ELEPHANT.getValue());
+                      break;
+                  }
 
-                this.trackMove();
-
-                switch (movedPiece.getRank()) {
-                  case MOUSE:
-                    this.playSoundEffect(Sound.MOUSE.getValue());
-                    break;
-                  case CAT:
-                    this.playSoundEffect(Sound.CAT.getValue());
-                    break;
-                  case WOLF:
-                    this.playSoundEffect(Sound.WOLF.getValue());
-                    break;
-                  case DOG:
-                    this.playSoundEffect(Sound.DOG.getValue());
-                    break;
-                  case LEOPARD:
-                    this.playSoundEffect(Sound.LEOPARD.getValue());
-                    break;
-                  case TIGER:
-                    this.playSoundEffect(Sound.TIGER.getValue());
-                    break;
-                  case LION:
-                    this.playSoundEffect(Sound.LION.getValue());
-                    break;
-                  case ELEPHANT:
-                    this.playSoundEffect(Sound.ELEPHANT.getValue());
-                    break;
                 }
 
               }
@@ -246,48 +247,6 @@ public class Board {
     }
     return yMarks[idx];
   }
-
-  // public Set<Point> getTrapPoints() {
-  // Set<Point> points = new HashSet<>();
-
-  // points.add(new Point(160, 0));
-  // points.add(new Point(240, 80));
-  // points.add(new Point(320, 0));
-  // points.add(new Point(240, 560));
-  // points.add(new Point(160, 640));
-  // points.add(new Point(320, 640));
-
-  // return points;
-  // }
-
-  // public Set<Piece> getDenPieces() {
-  // Set<Piece> pieces = new HashSet<>();
-
-  // for (Piece piece : this.getPieces()) {
-  // if (piece.getRank() == Rank.DEN) {
-  // pieces.add(piece);
-  // }
-  // }
-
-  // return pieces;
-  // }
-
-  // public boolean isSelfKill(PlayablePiece movedPiece, PlayablePiece
-  // targetPiece) {
-  // return movedPiece.getSide() == targetPiece.getSide();
-  // }
-
-  // public Set<Piece> getTrapPieces() {
-  // Set<Piece> pieces = new HashSet<>();
-
-  // for (Piece piece : this.getPieces()) {
-  // if (piece.getRank() == Rank.TRAP) {
-  // pieces.add(piece);
-  // }
-  // }
-
-  // return pieces;
-  // }
 
   public Set<Point> getRiverPoints() {
     Set<Point> points = new HashSet<>();
