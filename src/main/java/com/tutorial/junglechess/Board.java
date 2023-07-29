@@ -71,6 +71,7 @@ public class Board {
     this.trackStepStack(this.pieces);
   }
 
+  // Di chuyển quân cờ
   public void movePiece(int fromX, int fromY, int toX, int toY) {
     boolean isValidStep = this.isValidStep(fromX, fromY, toX, toY);
 
@@ -80,21 +81,22 @@ public class Board {
 
         PlayablePiece movedPiece = (PlayablePiece) this.getPieceAt(fromX, fromY);
 
+        // Kiểm tra xem quân cờ có phải là quân của bên được đi hay không
         if (movedPiece.getSide() == this.isBlackMove) {
 
+          // PlayablePiece >< EnvironmentPiece
           if (this.getPieceAt(toX, toY) != null && !this.getPieceAt(toX, toY).isPlayable()) {
-            // PlayablePiece >< EnvironmentPiece
 
             EnvironmentPiece environmentPiece = (EnvironmentPiece) this.getPieceAt(toX, toY);
 
             switch (environmentPiece.getRank()) {
               case RIVER:
+              // Kiểm tra quân cờ có thể qua được Sông hay không
                 if (movedPiece.isRiverPassable()) {
                   this.pieces.remove(movedPiece);
                   this.pieces.remove(environmentPiece);
 
-                  PlayablePiece newPiece = new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(),
-                      movedPiece.getImageName());
+                  PlayablePiece newPiece = new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName());
                   this.pieces.add(newPiece);
 
                   this.trackMove();
@@ -102,18 +104,19 @@ public class Board {
                 break;
 
               case TRAP:
+              // Kiểm tra có phải bẫy quân mình hay không
                 if (this.getSideOfTrap(environmentPiece) != movedPiece.getSide()) {
                   this.pieces.remove(movedPiece);
                   this.pieces.remove(environmentPiece);
 
-                  PlayablePiece newPiece = new PlayablePiece(toX, toY, Rank.DISABLED, movedPiece.getSide(),
-                      movedPiece.getImageName());
+                  PlayablePiece newPiece = new PlayablePiece(toX, toY, Rank.DISABLED, movedPiece.getSide(), movedPiece.getImageName());
                   this.pieces.add(newPiece);
                   this.trackMove();
                 }
                 break;
 
               case DEN:
+              // Xác định quân chiến thắng
                 this.winSide = movedPiece.getSide() ? "black" : "red";
                 this.trackMove();
                 break;
@@ -121,21 +124,24 @@ public class Board {
 
             this.playSoundEffect(Sound.MOVE.getValue());
 
-          } else if (this.getPieceAt(toX, toY) != null && this.getPieceAt(toX, toY).isPlayable()) {
-            // PlayablePiece >< PlayablePiece
+          } 
+          // PlayablePiece >< PlayablePiece
+          else if (this.getPieceAt(toX, toY) != null && this.getPieceAt(toX, toY).isPlayable()) {
 
             PlayablePiece targetPiece = (PlayablePiece) this.getPieceAt(toX, toY);
 
+            // Kiểm tra xem quân cờ trước mặt có phải cờ đối phương không
             if (movedPiece.getSide() != targetPiece.getSide()) {
 
               if (
+                // Kiểm tra cấp bậc của quân mình có lớn hơn cờ của đối phương
                   (movedPiece.getRank().getValue() >= targetPiece.getRank().getValue()) ||
+                // Kiểm tra xem cờ quân mình là Chuột và cờ đối thủ là Voi
                   (movedPiece.getRank().getValue() == 1 && targetPiece.getRank().getValue() == 8)
               ) {
                 
-                if(movedPiece.getRank().getValue() == 8 && targetPiece.getRank().getValue() == 1) {
-
-                }
+                // Kiểm tra xem cờ quân mình là Voi và cờ đối thủ là Chuột
+                if(movedPiece.getRank().getValue() == 8 && targetPiece.getRank().getValue() == 1) {}
                 else {
                   this.pieces.remove(movedPiece);
                   this.pieces.remove(targetPiece);
@@ -179,8 +185,9 @@ public class Board {
 
             }
 
-          } else {
-            // PlayablePiece >< Nothing
+          } 
+          // PlayablePiece >< Nothing
+          else {
             this.pieces.remove(movedPiece);
             this.pieces.add(new PlayablePiece(toX, toY, movedPiece.getRank(), movedPiece.getSide(), movedPiece.getImageName()));
 
@@ -199,6 +206,7 @@ public class Board {
 
   }
 
+//  Kiểm tra bước đi có hợp lệ hay không
   public boolean isValidStep(int fromX, int fromY, int toX, int toY) {
     int steps = 0;
 
@@ -211,6 +219,7 @@ public class Board {
     return steps == 1;
   }
 
+//  Trả về quân cờ tại tọa độ được cho
   public Piece getPieceAt(int x, int y) {
     for (Piece piece : this.getPieces()) {
       if (piece.getX() == x && piece.getY() == y) {
@@ -220,10 +229,12 @@ public class Board {
     return null;
   }
 
+//  Trả về danh sách quân cờ đang có trên bàn cờ
   public Set<Piece> getPieces() {
     return this.pieces;
   }
 
+//  Trả về mốc tọa độ X gần nhất
   public int getXMark(int x) {
     int idx = 0;
 
@@ -236,6 +247,7 @@ public class Board {
     return xMarks[idx];
   }
 
+//  Trả về mốc tọa độ Y gần nhất
   public int getYMark(int y) {
     int idx = 0;
 
@@ -248,6 +260,7 @@ public class Board {
     return yMarks[idx];
   }
 
+//  Trả về danh sách tọa độ cờ Sông
   public Set<Point> getRiverPoints() {
     Set<Point> points = new HashSet<>();
 
@@ -267,10 +280,12 @@ public class Board {
     return points;
   }
 
+// Trả về bên được đi
   public boolean getMoveSide() {
     return this.isBlackMove;
   }
 
+// Kiểm tra có phải Bẫy quân mình hay không
   public boolean getSideOfTrap(EnvironmentPiece piece) {
     boolean isBlack = true;
 
@@ -281,6 +296,7 @@ public class Board {
     return isBlack;
   }
 
+//  Render lại cờ Sông khi có quân cờ đi vào Sông
   public void trackEnvironments() {
     for (Point point : this.getRiverPoints()) {
       if (this.getPieceAt(point.x, point.y) == null) {
@@ -289,6 +305,7 @@ public class Board {
     }
   }
 
+//  Kiểm tra số lượng quân cờ của mỗi bên
   public void trackPieceTotal() {
     if (this.totalBlackPiece == 0) {
       this.winSide = "red";
@@ -298,18 +315,22 @@ public class Board {
     }
   }
 
+//  Kiểm tra bên của bước đi kế tiếp
   public void trackMove() {
     this.isBlackMove = !this.isBlackMove;
   }
 
+//  Kiểm tra xem có bên nào đạt điều kiện thắng chưa
   public String trackWin() {
     return this.winSide;
   }
 
+//  Thêm tập hợp quân cờ vào phiên bản ván cờ
   public void trackStepStack(Set<Piece> pieces) {
     this.stepStack.pushToStepStack(this.pieces);
   }
 
+// Trả về phiên bản ván cờ trước đó
   public void handleBackStep() {
     if (this.stepStack.getStepStack().size() > 1) {
       this.stepStack.getStepStack().pop();
@@ -318,6 +339,7 @@ public class Board {
     }
   }
 
+//  Phát âm thanh sau mỗi bước di chuyển
   public void playSoundEffect(String location) {
     try {
       File soundPath = new File(location);
