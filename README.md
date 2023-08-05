@@ -1,6 +1,6 @@
-# Jungle Chess - Dou Shou Qi
+# Cờ Thú - Jungle Chess / Dou Shou Qi
 
-**This is a dummy version of Dou Shou Qi (Chinese Chess).**
+**Phiên bản "Sinh viên" của Cờ Thú :smile:**
 
 ![JungleChess-Board](markdown/board.png)
 
