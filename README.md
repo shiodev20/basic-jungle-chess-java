@@ -1,6 +1,6 @@
 # Jungle Chess - Dou Shou Qi
 
-**This is just dummy version of Dou Shou Qi (Chinese Chess).**
+**This is a dummy version of Dou Shou Qi (Chinese Chess).**
 
 ![JungleChess-Board](markdown/board.png)
 
