@@ -1,6 +1,6 @@
 # Cờ Thú - Jungle Chess / Dou Shou Qi
 
-**Phiên bản "Sinh viên" của Cờ Thú :smile:**
+**Đây là phiên bản "sinh viên" của Cờ Thú sử dụng Java Swing để lập trình:smile:**
 
 ![JungleChess-Board](markdown/board.png)
 

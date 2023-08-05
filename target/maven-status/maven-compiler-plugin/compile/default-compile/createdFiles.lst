@@ -1,3 +1,14 @@
-com\tutorial\junglechess\ChessFrame.class
 com\tutorial\junglechess\JungleChess.class
-com\tutorial\junglechess\ChessFrame$1.class
+com\tutorial\junglechess\Rank.class
+com\tutorial\junglechess\Sound.class
+com\tutorial\junglechess\StepStack.class
+com\tutorial\junglechess\JungleChess$4.class
+com\tutorial\junglechess\JungleChess$2.class
+com\tutorial\junglechess\Board.class
+com\tutorial\junglechess\Board$1.class
+com\tutorial\junglechess\JungleChess$1.class
+com\tutorial\junglechess\JungleChessPanel.class
+com\tutorial\junglechess\EnvironmentPiece.class
+com\tutorial\junglechess\PlayablePiece.class
+com\tutorial\junglechess\Piece.class
+com\tutorial\junglechess\JungleChess$3.class
