@@ -2,7 +2,7 @@
 
 **Cờ Thú phiên bản "sinh viên" sử dụng Java Swing để lập trình**
 
-link demo:
+link demo: [Cờ thú](https://youtu.be/vOiPwZpsOYM)
 
 
 ![JungleChess-Board](markdown/board.png)
